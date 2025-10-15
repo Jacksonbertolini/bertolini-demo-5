@@ -1,0 +1,138 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-4">
+    <h1>Employee Management</h1>
+    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addEmployeeModal">
+        Add New Employee
+    </button>
+
+    <!-- Table displaying all employees -->
+    <table class="table table-striped mt-4">
+        <thead>
+            <tr>
+                <th>User ID</th>
+                <th>Username</th>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Created At</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for employee in all_employees %}
+            <tr>
+                <td>{{ employee.user_id }}</td>
+                <td>{{ employee.username }}</td>
+                <td>{{ employee.first_name }}</td>
+                <td>{{ employee.last_name }}</td>
+                <td>{{ employee.created_at }}</td>
+                <td>
+                    <button type="button" class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#editEmployeeModal{{ employee.user_id }}">
+                        Edit
+                    </button>
+                    <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteEmployeeModal{{ employee.user_id }}">
+                        Delete
+                    </button>
+                </td>
+            </tr>
+
+            <!-- Edit Employee Modal -->
+            <div class="modal fade" id="editEmployeeModal{{ employee.user_id }}" tabindex="-1" aria-labelledby="editEmployeeModalLabel{{ employee.user_id }}" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="editEmployeeModalLabel{{ employee.user_id }}">Edit Employee</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <form method="post" action="{{ url_for('employees.update_employee', user_id=employee.user_id) }}">
+                            <div class="modal-body">
+                                <div class="mb-3">
+                                    <label for="username" class="form-label">Username</label>
+                                    <input type="text" class="form-control" name="username" value="{{ employee.username }}" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="first_name" class="form-label">First Name</label>
+                                    <input type="text" class="form-control" name="first_name" value="{{ employee.first_name }}" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="last_name" class="form-label">Last Name</label>
+                                    <input type="text" class="form-control" name="last_name" value="{{ employee.last_name }}" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="password" class="form-label">New Password</label>
+                                    <input type="password" class="form-control" name="password" placeholder="Leave blank to keep current password">
+                                    <small class="form-text text-muted">Only fill this field if you want to change the password.</small>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                <button type="submit" class="btn btn-warning">Save Changes</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Delete Employee Modal -->
+            <div class="modal fade" id="deleteEmployeeModal{{ employee.user_id }}" tabindex="-1" aria-labelledby="deleteEmployeeModalLabel{{ employee.user_id }}" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="deleteEmployeeModalLabel{{ employee.user_id }}">Delete Employee</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            Are you sure you want to delete employee {{ employee.first_name }} {{ employee.last_name }} ({{ employee.username }})?
+                        </div>
+                        <div class="modal-footer">
+                            <form method="post" action="{{ url_for('employees.delete_employee', user_id=employee.user_id) }}">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                <button type="submit" class="btn btn-danger">Delete</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<!-- Add Employee Modal -->
+<div class="modal fade" id="addEmployeeModal" tabindex="-1" aria-labelledby="addEmployeeModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addEmployeeModalLabel">Add New Employee</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form method="post" action="{{ url_for('employees.show_employees') }}">
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="username" class="form-label">Username</label>
+                        <input type="text" class="form-control" name="username" placeholder="e.g., jsmith" required>
+                        <small class="form-text text-muted">Username must be unique.</small>
+                    </div>
+                    <div class="mb-3">
+                        <label for="first_name" class="form-label">First Name</label>
+                        <input type="text" class="form-control" name="first_name" placeholder="e.g., John" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="last_name" class="form-label">Last Name</label>
+                        <input type="text" class="form-control" name="last_name" placeholder="e.g., Smith" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="password" class="form-label">Password</label>
+                        <input type="password" class="form-control" name="password" placeholder="Enter password" required>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Add Employee</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
