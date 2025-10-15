@@ -102,7 +102,17 @@
                     </div>
                 </div>
                 {% endfor %}
-                <tr class="table-info">
+                <tr>
+                    <td colspan="5" class="text-end"><strong>Subtotal:</strong></td>
+                    <td><strong>${{ "%.2f"|format(subtotal) }}</strong></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td colspan="5" class="text-end"><strong>Tax (7%):</strong></td>
+                    <td><strong>${{ "%.2f"|format(tax) }}</strong></td>
+                    <td></td>
+                </tr>
+                <tr class="table-success">
                     <td colspan="5" class="text-end"><strong>Total:</strong></td>
                     <td><strong>${{ "%.2f"|format(total) }}</strong></td>
                     <td></td>

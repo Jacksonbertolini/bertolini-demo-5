@@ -3,17 +3,39 @@
 {% block content %}
 
 <div class="text-center">
-    <div class="hero-section mb-5">
+    <div class="hero-section mb-4">
         <h1 class="display-3 mb-3">
             <i class="fas fa-pizza-slice me-3" style="color: #e74c3c;"></i>Pizza Palace Management System
         </h1>
         <h2 class="h4 text-muted mb-4">Complete Restaurant Management Solution</h2>
-        <p class="lead mb-4">Manage your pizza restaurant with ease - from menu items to orders, customers to employees.</p>
+    </div>
+
+    <!-- Statistics Cards -->
+    <div class="row g-4 mb-5">
+        <div class="col-md-6">
+            <div class="card stats-card h-100">
+                <div class="card-body text-center p-4">
+                    <i class="fas fa-dollar-sign fa-3x mb-3" style="color: #27ae60;"></i>
+                    <h3 class="display-4 mb-2" style="color: #27ae60;">${{ "%.2f"|format(total_sales) }}</h3>
+                    <h5 class="card-title mb-0">Total Sales (All Time)</h5>
+                    <p class="text-muted mb-0"><small>Includes 7% tax</small></p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card stats-card h-100">
+                <div class="card-body text-center p-4">
+                    <i class="fas fa-users fa-3x mb-3" style="color: #3498db;"></i>
+                    <h3 class="display-4 mb-2" style="color: #3498db;">{{ customer_count }}</h3>
+                    <h5 class="card-title mb-0">Total Customers</h5>
+                </div>
+            </div>
+        </div>
     </div>
 
     <!-- Quick Access Cards -->
     <div class="row g-4 mb-5">
-        <div class="col-md-3 col-sm-6">
+        <div class="col-md-4 col-sm-6">
             <a href="{{ url_for('customers.show_customers') }}" class="text-decoration-none">
                 <div class="card shortcut-card h-100">
                     <div class="card-body text-center p-4">
@@ -30,7 +52,7 @@
             </a>
         </div>
 
-        <div class="col-md-3 col-sm-6">
+        <div class="col-md-4 col-sm-6">
             <a href="{{ url_for('pizzas.show_pizzas') }}" class="text-decoration-none">
                 <div class="card shortcut-card h-100">
                     <div class="card-body text-center p-4">
@@ -47,7 +69,7 @@
             </a>
         </div>
 
-        <div class="col-md-3 col-sm-6">
+        <div class="col-md-4 col-sm-6">
             <a href="{{ url_for('orders.show_orders') }}" class="text-decoration-none">
                 <div class="card shortcut-card h-100">
                     <div class="card-body text-center p-4">
@@ -63,22 +85,52 @@
                 </div>
             </a>
         </div>
+    </div>
 
-        <div class="col-md-3 col-sm-6">
-            <a href="{{ url_for('employees.show_employees') }}" class="text-decoration-none">
-                <div class="card shortcut-card h-100">
-                    <div class="card-body text-center p-4">
-                        <div class="icon-wrapper mb-3">
-                            <i class="fas fa-user-tie fa-4x" style="color: #9b59b6;"></i>
-                        </div>
-                        <h4 class="card-title mb-2">Employees</h4>
-                        <p class="card-text text-muted">Manage staff accounts and permissions</p>
-                        <div class="mt-3">
-                            <span class="badge bg-purple">Staff</span>
-                        </div>
-                    </div>
+    <!-- Recent Orders Section -->
+    <div class="row mb-5">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header" style="background: linear-gradient(90deg, var(--pizza-red), var(--pizza-orange)); color: white;">
+                    <h4 class="mb-0"><i class="fas fa-clock me-2"></i>Recent Orders</h4>
                 </div>
-            </a>
+                <div class="card-body">
+                    {% if recent_orders %}
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Order #</th>
+                                    <th>Customer</th>
+                                    <th>Date</th>
+                                    <th>Items</th>
+                                    <th>Total</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for order in recent_orders %}
+                                <tr>
+                                    <td><strong>#{{ order.order_id }}</strong></td>
+                                    <td>{{ order.customer_name }}</td>
+                                    <td>{{ order.date.strftime('%b %d, %Y') if order.date else 'N/A' }}</td>
+                                    <td>{{ order.item_count }}</td>
+                                    <td><strong>${{ "%.2f"|format(order.order_total or 0) }}</strong></td>
+                                    <td>
+                                        <a href="{{ url_for('orders.order_details', order_id=order.order_id) }}" class="btn btn-sm btn-primary">
+                                            <i class="fas fa-eye"></i> View
+                                        </a>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    {% else %}
+                    <p class="text-center text-muted mb-0">No orders found.</p>
+                    {% endif %}
+                </div>
+            </div>
         </div>
     </div>
 
@@ -87,7 +139,7 @@
         <div class="col-md-4">
             <div class="feature-card card h-100">
                 <div class="card-body text-center p-4">
-                    <i class="fas fa-chart-line fa-3x mb-3" style="color: var(--gcsu-blue);"></i>
+                    <i class="fas fa-chart-line fa-3x mb-3" style="color: var(--pizza-red);"></i>
                     <h5 class="card-title">Real-time Analytics</h5>
                     <p class="card-text">Track sales, customer data, and order statistics in real-time</p>
                 </div>
@@ -96,7 +148,7 @@
         <div class="col-md-4">
             <div class="feature-card card h-100">
                 <div class="card-body text-center p-4">
-                    <i class="fas fa-shield-alt fa-3x mb-3" style="color: var(--gcsu-green);"></i>
+                    <i class="fas fa-shield-alt fa-3x mb-3" style="color: #27ae60;"></i>
                     <h5 class="card-title">Secure & Reliable</h5>
                     <p class="card-text">Password encryption and secure data management</p>
                 </div>
@@ -116,7 +168,25 @@
 
 <style>
     .hero-section {
-        padding: 3rem 0;
+        padding: 2rem 0;
+    }
+
+    .stats-card {
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(10px);
+        border: none;
+        border-radius: 15px;
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s ease;
+    }
+
+    .stats-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 12px 30px rgba(0, 0, 0, 0.2);
+    }
+
+    .stats-card .display-4 {
+        font-weight: 700;
     }
 
     .shortcut-card {
@@ -171,8 +241,12 @@
     }
 
     .card-title {
-        color: var(--gcsu-blue);
+        color: var(--pizza-burgundy);
         font-weight: 600;
+    }
+
+    .table-hover tbody tr:hover {
+        background-color: var(--pizza-light-red);
     }
 </style>
 

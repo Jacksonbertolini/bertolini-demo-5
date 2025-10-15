@@ -101,11 +101,15 @@ def order_details(order_id):
     cursor.execute('SELECT pizza_id, name, size, price FROM Pizza ORDER BY name, size')
     all_pizzas = cursor.fetchall()
 
-    # Calculate total
-    total = sum(detail['subtotal'] for detail in details)
+    # Calculate subtotal, tax (7%), and total
+    from decimal import Decimal
+    subtotal = sum(detail['subtotal'] for detail in details)
+    tax_rate = Decimal('0.07')  # 7% tax
+    tax = subtotal * tax_rate
+    total = subtotal + tax
 
     return render_template('order_details.html', order=order, details=details,
-                         all_pizzas=all_pizzas, total=total)
+                         all_pizzas=all_pizzas, subtotal=subtotal, tax=tax, total=total)
 
 @orders.route('/details/<int:order_id>/add', methods=['POST'])
 @login_required

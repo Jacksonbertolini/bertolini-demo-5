@@ -1,0 +1,150 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="row justify-content-center">
+    <div class="col-lg-8">
+        <div class="text-center mb-4">
+            <h1 class="display-4">
+                <i class="fas fa-user-circle me-3" style="color: var(--pizza-red);"></i>Employee Profile
+            </h1>
+            <p class="lead text-muted">Your account information</p>
+        </div>
+
+        <!-- Profile Information Card -->
+        <div class="card mb-4">
+            <div class="card-header" style="background: linear-gradient(90deg, var(--pizza-red), var(--pizza-orange)); color: white;">
+                <h4 class="mb-0"><i class="fas fa-id-card me-2"></i>Personal Information</h4>
+            </div>
+            <div class="card-body p-4">
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <div class="profile-field">
+                            <label class="text-muted mb-1"><i class="fas fa-user me-2"></i>First Name</label>
+                            <h5>{{ employee.first_name }}</h5>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="profile-field">
+                            <label class="text-muted mb-1"><i class="fas fa-user me-2"></i>Last Name</label>
+                            <h5>{{ employee.last_name }}</h5>
+                        </div>
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <div class="profile-field">
+                            <label class="text-muted mb-1"><i class="fas fa-at me-2"></i>Username</label>
+                            <h5>{{ employee.username }}</h5>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="profile-field">
+                            <label class="text-muted mb-1"><i class="fas fa-hashtag me-2"></i>Employee ID</label>
+                            <h5>#{{ employee.user_id }}</h5>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="profile-field">
+                            <label class="text-muted mb-1"><i class="fas fa-calendar-plus me-2"></i>Account Created</label>
+                            <h5>{{ employee.created_at.strftime('%B %d, %Y') if employee.created_at else 'N/A' }}</h5>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="profile-field">
+                            <label class="text-muted mb-1"><i class="fas fa-calendar-check me-2"></i>Last Updated</label>
+                            <h5>{{ employee.updated_at.strftime('%B %d, %Y') if employee.updated_at else 'N/A' }}</h5>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- System Statistics Card -->
+        <div class="card mb-4">
+            <div class="card-header" style="background: linear-gradient(90deg, var(--pizza-orange), var(--pizza-yellow)); color: white;">
+                <h4 class="mb-0"><i class="fas fa-chart-bar me-2"></i>System Activity</h4>
+            </div>
+            <div class="card-body p-4">
+                <div class="row text-center">
+                    <div class="col-md-4 mb-3 mb-md-0">
+                        <div class="stat-box">
+                            <i class="fas fa-shopping-cart fa-3x mb-3" style="color: #27ae60;"></i>
+                            <h3 class="display-6" style="color: #27ae60;">{{ stats.total_orders if stats else 0 }}</h3>
+                            <p class="text-muted mb-0">Total Orders</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4 mb-3 mb-md-0">
+                        <div class="stat-box">
+                            <i class="fas fa-clock fa-3x mb-3" style="color: #3498db;"></i>
+                            <h3 class="display-6" style="color: #3498db;">Active</h3>
+                            <p class="text-muted mb-0">Status</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="stat-box">
+                            <i class="fas fa-shield-alt fa-3x mb-3" style="color: #e74c3c;"></i>
+                            <h3 class="display-6" style="color: #e74c3c;">Admin</h3>
+                            <p class="text-muted mb-0">Role</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="text-center">
+            <a href="{{ url_for('dashboard') }}" class="btn btn-lg btn-primary">
+                <i class="fas fa-home me-2"></i>Back to Dashboard
+            </a>
+        </div>
+    </div>
+</div>
+
+<style>
+    .profile-field {
+        padding: 1rem;
+        background: rgba(231, 76, 60, 0.05);
+        border-radius: 10px;
+        margin-bottom: 1rem;
+    }
+
+    .profile-field label {
+        font-weight: 600;
+        font-size: 0.9rem;
+    }
+
+    .profile-field h5 {
+        color: var(--pizza-burgundy);
+        margin-bottom: 0;
+        font-weight: 600;
+    }
+
+    .stat-box {
+        padding: 1.5rem;
+        background: rgba(255, 255, 255, 0.5);
+        border-radius: 15px;
+        transition: all 0.3s ease;
+    }
+
+    .stat-box:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+    }
+
+    .btn-outline-secondary {
+        border: 2px solid var(--pizza-red);
+        color: var(--pizza-red);
+        background: transparent;
+    }
+
+    .btn-outline-secondary:hover {
+        background: var(--pizza-red);
+        color: white;
+        border-color: var(--pizza-red);
+    }
+</style>
+
+{% endblock %}
