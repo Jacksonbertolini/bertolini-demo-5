@@ -1,9 +1,11 @@
 from flask import Blueprint, render_template, request, redirect, url_for, flash
 from app.db_connect import get_db
+from app.blueprints.auth import login_required
 
 orders = Blueprint('orders', __name__)
 
 @orders.route('/', methods=['GET', 'POST'])
+@login_required
 def show_orders():
     db = get_db()
     cursor = db.cursor()
@@ -37,6 +39,7 @@ def show_orders():
     return render_template('orders.html', all_orders=all_orders, all_customers=all_customers)
 
 @orders.route('/update_order/<int:order_id>', methods=['POST'])
+@login_required
 def update_order(order_id):
     db = get_db()
     cursor = db.cursor()
@@ -53,6 +56,7 @@ def update_order(order_id):
     return redirect(url_for('orders.show_orders'))
 
 @orders.route('/delete_order/<int:order_id>', methods=['POST'])
+@login_required
 def delete_order(order_id):
     db = get_db()
     cursor = db.cursor()
@@ -65,6 +69,7 @@ def delete_order(order_id):
     return redirect(url_for('orders.show_orders'))
 
 @orders.route('/details/<int:order_id>')
+@login_required
 def order_details(order_id):
     db = get_db()
     cursor = db.cursor()
@@ -103,6 +108,7 @@ def order_details(order_id):
                          all_pizzas=all_pizzas, total=total)
 
 @orders.route('/details/<int:order_id>/add', methods=['POST'])
+@login_required
 def add_order_detail(order_id):
     db = get_db()
     cursor = db.cursor()
@@ -119,6 +125,7 @@ def add_order_detail(order_id):
     return redirect(url_for('orders.order_details', order_id=order_id))
 
 @orders.route('/details/<int:order_id>/update/<int:detail_id>', methods=['POST'])
+@login_required
 def update_order_detail(order_id, detail_id):
     db = get_db()
     cursor = db.cursor()
@@ -134,6 +141,7 @@ def update_order_detail(order_id, detail_id):
     return redirect(url_for('orders.order_details', order_id=order_id))
 
 @orders.route('/details/<int:order_id>/delete/<int:detail_id>', methods=['POST'])
+@login_required
 def delete_order_detail(order_id, detail_id):
     db = get_db()
     cursor = db.cursor()

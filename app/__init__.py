@@ -6,11 +6,13 @@ app = create_app()
 app.secret_key = 'your-secret'  # Replace with an environment
 
 # Register Blueprints
+from app.blueprints.auth import auth
 from app.blueprints.pizzas import pizzas
 from app.blueprints.orders import orders
 from app.blueprints.customers import customers
 from app.blueprints.employees import employees
 
+app.register_blueprint(auth, url_prefix='/auth')
 app.register_blueprint(pizzas, url_prefix='/pizzas')
 app.register_blueprint(orders, url_prefix='/orders')
 app.register_blueprint(customers, url_prefix='/customers')

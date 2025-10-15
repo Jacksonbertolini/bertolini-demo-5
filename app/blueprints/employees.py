@@ -1,10 +1,12 @@
 from flask import Blueprint, render_template, request, redirect, url_for, flash
 from app.db_connect import get_db
+from app.blueprints.auth import login_required
 from werkzeug.security import generate_password_hash
 
 employees = Blueprint('employees', __name__)
 
 @employees.route('/', methods=['GET', 'POST'])
+@login_required
 def show_employees():
     db = get_db()
     cursor = db.cursor()
@@ -41,6 +43,7 @@ def show_employees():
     return render_template('employees.html', all_employees=all_employees)
 
 @employees.route('/update_employee/<int:user_id>', methods=['POST'])
+@login_required
 def update_employee(user_id):
     db = get_db()
     cursor = db.cursor()
@@ -75,6 +78,7 @@ def update_employee(user_id):
     return redirect(url_for('employees.show_employees'))
 
 @employees.route('/delete_employee/<int:user_id>', methods=['POST'])
+@login_required
 def delete_employee(user_id):
     db = get_db()
     cursor = db.cursor()

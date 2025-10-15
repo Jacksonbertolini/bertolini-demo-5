@@ -119,7 +119,7 @@
 </head>
 <body>
     <nav class="navbar navbar-expand-lg navbar-gcsu">
-        <a class="navbar-brand" href="{{ url_for('index') }}">
+        <a class="navbar-brand" href="{{ url_for('dashboard') }}">
             <i class="fas fa-pizza-slice me-2"></i>Pizza Palace
         </a>
         <div class="collapse navbar-collapse">
@@ -149,6 +149,20 @@
                         <i class="fas fa-user-tie me-1"></i>Employees
                     </a>
                 </li>
+            </ul>
+            <ul class="navbar-nav ms-auto">
+                {% if session.get('user_id') %}
+                <li class="nav-item">
+                    <span class="nav-link">
+                        <i class="fas fa-user-circle me-1"></i>{{ session.get('full_name', 'User') }}
+                    </span>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('auth.logout') }}">
+                        <i class="fas fa-sign-out-alt me-1"></i>Logout
+                    </a>
+                </li>
+                {% endif %}
             </ul>
         </div>
     </nav>

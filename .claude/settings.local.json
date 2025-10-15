@@ -15,7 +15,9 @@
       "WebFetch(domain:www.brandcolorcode.com)",
       "Bash(git init:*)",
       "Bash(git remote add:*)",
-      "Bash(git add:*)"
+      "Bash(git add:*)",
+      "Bash(git commit -m \"$(cat <<''EOF''\nBuild complete Pizza Palace Management System with full CRUD operations\n\n- Created pizza management database schema with 5 tables (Customer, Pizza, Order, Order_Detail, Employee)\n- Built complete CRUD blueprints for all entities with modal-based UI\n- Implemented customer management with order history tracking\n- Added pizza menu management with pricing and costs\n- Created order management system with detailed order items\n- Implemented employee management with secure password hashing\n- Removed example/sample code and replaced with pizza-themed application\n- Updated UI with pizza restaurant theme (red, orange, yellow color scheme)\n- Created interactive dashboard with shortcut cards to all management pages\n- Added navigation bar with links to all main features\n- Implemented proper foreign key relationships and cascade operations\n- Seeded database with sample pizza restaurant data\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n\nCo-Authored-By: Claude <noreply@anthropic.com>\nEOF\n)\")",
+      "Bash(git push:*)"
     ],
     "deny": [],
     "ask": []
